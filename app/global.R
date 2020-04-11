@@ -9,6 +9,7 @@ library(ggplot2)
 library(Hmisc)
 library(lubridate)
 library(rbokeh)
+library(httr)
 
 
 ##function to read rds files from github

@@ -5,9 +5,9 @@ account: arau
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 1971878
-bundleId: 2999598
+bundleId: 3000179
 url: https://arau.shinyapps.io/COVID19-MX/
-when: 1586602085.07627
+when: 1586617958.39584
 asMultiple: FALSE
 asStatic: FALSE
-ignoredFiles: download.R|downloadAPI.R|table.csv
+ignoredFiles: centroids.rds|diasData.rds|download.R|downloadAPI.R|muertos.rds|poblacion.rds|shapefile.rds|table.rds
