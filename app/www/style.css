@@ -1,0 +1,382 @@
+
+ body {
+    font-family: 'Poppins', sans-serif;
+}
+ 
+ 
+  #titulo{
+   background-color: #5E99C5;
+   color:white;
+   margin-bottom:10px;
+   padding-bottom:10px;
+   
+ }
+ 
+ 
+
+
+p.introtext {
+   
+  background-color:white;
+  color: black;
+  height: 20px;
+  margin-top: -5px;
+  padding: 4px;
+  font-size:10px;
+  margin-bottom: -6px;
+  
+   
+}
+
+.intro_title {
+   
+   font-weight: bold;
+}
+
+.container_cajas {
+   
+   
+   margin: 15px 100px 0 100px;
+
+}
+
+.caja{
+   
+  
+   text-align: center;
+}
+ 
+.caja_titulo {
+   
+   font-size: 30px;
+   margin-bottom: -10px;
+  
+   
+} 
+
+.caja_linea {
+   
+   margin: 5px px;
+   border: 1px solid blue;
+  border-radius: 3px;
+  width:70%;
+  
+}
+
+.caja_info {
+   
+   font-size: 25px;
+   
+   
+}
+
+.casos_info {
+   
+   color: red !important;
+}
+
+p.caja_nota{
+   
+   margin-top: -15px !important;
+}
+
+.linea_division {
+   
+   margin-top: 5px;
+   width:95%;
+}
+ 
+ a{
+   
+   color: steelblue;
+   
+ }
+ 
+  .dataTables_scrollBody {
+   
+   height: 460px !important;
+   
+   
+}
+
+.col-sm-9{
+   padding-left:10px;
+   padding-right:60px;
+   
+}
+ 
+ #map{
+    height: 500px !important;
+    
+    
+ }
+ 
+ .leaflet-container {
+    background: #FFF;
+}
+ .container_botones {
+    
+    text-align:center;
+ }
+ .boton{
+   width: 24%;
+   height: 30px;
+   
+   
+}
+ 
+ .table_note{
+    
+    font-size:12px;
+ }
+ 
+ tr{
+    
+    text-align:center;
+ }
+ 
+ @media only screen and (max-width: 780px) {
+ 
+  body {
+    
+    padding:25px;
+   
+  }
+  
+  p.introtext {
+   margin-top:10px;
+   margin-bottom:35px;
+   
+  }
+  
+  p.introtextsub {
+     margin-top:-40px !important;
+     
+  }
+  
+ .container_cajas {
+    
+    margin: 15px 0px 0px 0px; 
+   
+ }
+ 
+ .caja_titulo {
+   
+   font-size: 30px;
+   margin-top: 20px;
+   background-color: gray;
+   color: white;
+  
+   
+} 
+ 
+ .caja_linea{
+    opacity:0;
+    margin-bottom: -10px;
+ }
+ 
+ 
+   
+   .col-sm-9{
+      margin-top: 20px;
+   padding-left:5px;
+   padding-right:5px;
+   
+}
+
+.boton_tabla{
+   
+   font-size:10px;
+}
+.boton_casos {
+   
+   width: 40%;
+}
+
+.boton {
+   
+   font-size: 9px;
+}
+   
+}
+
+
+ /*
+ span {
+    
+    font-style: "Poppins";
+ }
+ *
+ 
+.leaflet-touch .leaflet-control-layers, .leaflet-touch .leaflet-bar {
+    border: none;
+    
+}
+ 
+#table{
+  margin-top:-20px; 
+  height:300px;
+   
+}
+
+#table table td{
+  line-height:70%;
+  font-size:12px;
+ 
+}
+
+.dataTables_scrollBody {
+   
+   height: 100% !important;
+   
+   
+}
+
+#map_container{
+   
+   height:500px;
+}
+#map{
+   
+   height: 100% !important;
+   width: 100% Important;
+}
+   
+  
+.boton{
+   width: 33%;
+   height: 30px;
+   background-color:#D4DADC;
+   font-size: 12px;
+   
+}
+
+.leaflet-container {
+    background: #FFF;
+}
+
+.legend{
+   
+   background-color:red;
+   height:5px;
+   width: 5px;
+   float: left;
+}
+
+.legendtext{
+   
+   float: right;
+   margin-right: 14px;
+}
+
+
+#tableLegends{
+      
+      margin-bottom: -20px;
+      
+    }
+    
+ 
+    
+.chart_divider{
+   
+   margin-top: 0;
+}
+
+@media only screen and (max-width: 780px) {
+ 
+  body {
+    
+    padding:25px;
+   
+  }
+  
+  #colaboradres {
+     border-bottom-style: ridge;
+     border-color: thin;
+     padding-bottom: 10px;
+     margin-bottom: 10px;
+     
+  }
+  
+  #DiaBorder{
+     
+      border-bottom-style: ridge;
+     border-color: thin;
+     padding-bottom: 10px;
+     margin-bottom: 10px;
+     
+  }
+  
+  #CasosnuevosBorder {
+     border-bottom-style: ridge;
+     border-color: thin;
+     padding-bottom: 10px;
+     margin-bottom: 10px;
+     
+     
+     
+  }
+  
+  
+  #map{
+     
+     margin-top:15px;
+     
+  }
+  
+  .boton{
+   width: 31%;
+  }
+  
+  
+  .dataTables_scrollBody {
+   
+   height: 450px !important;
+   
+   
+}
+}
+
+/*
+#Casos{
+   text-align:left;
+   color:#fb4444;
+   
+ }
+ 
+ .dia {
+    
+    text-align: center;
+ }
+ 
+ .casos {
+    text-align:left;
+   color:#fb4444;
+    
+ }
+ 
+ .bullets {
+    color: black;
+    
+ }
+ #ayer{
+    text-align:left;
+   color:black;
+    
+ }
+ 
+ #genero{
+   text-align:left;
+   color:black;
+   
+ }
+ 
+
+h6{
+   text-align:left;
+   margin-bottom:-2px;
+   margin-right: -10px;
+   
+ }
+
