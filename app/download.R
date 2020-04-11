@@ -15,7 +15,7 @@ library(rbokeh)
 #https://www.gob.mx/salud/es/archivo/documentos
 
 #Parameters 
-setwd("C:\\Users\\andre\\Dropbox\\Andres\\03.Dashboards\\10.Coronavirus")
+setwd("C:\\Users\\andre\\Dropbox\\Andres\\03.Dashboards\\10.Coronavirus\\covid19mx")
 file = file.path("data","10Abril.pdf") 
 file_muertos = file.path("data", "Muertos.xlsx")
 file_poblacion = file.path("data", "Poblacion.xlsx")
@@ -28,7 +28,7 @@ centroids = read_rds("app/centroids.rds")
 
 
 #locate_areas(file)
-locate_areas(file = file, pages = 2)
+#locate_areas(file = file, pages = 2)
 
 #Funciton to remove Xs from strings
 removeX = function(x){str_remove(x,"X")}
@@ -380,7 +380,6 @@ muertos = readxl::read_xlsx(file_muertos)%>%
 
 
 write_rds(diasData, "app/diasData.rds")
-#write_csv(table, "app/table.csv")
 write_rds(muertos, "app/muertos.rds")
 write_rds(poblacion, "app/poblacion.rds")
 

@@ -10,6 +10,35 @@ library(Hmisc)
 library(lubridate)
 library(rbokeh)
 
+
+##function to read rds files from github
+get_rds <- function(url, rds_file) {
+  
+  RawData <- GET(url) #Sucess!!
+  
+  
+  tempdir = tempdir()
+  rdsfile=file.path(tempdir, rds_file)
+  
+  #open connection to write data in download folder
+  filecon <- file(rdsfile, "wb") 
+  #write data contents to download file!!
+  writeBin(RawData$content, filecon) 
+  #close the connection
+  close(filecon)
+  
+  t = readRDS(rdsfile)
+  
+  return(t)
+  
+  
+}
+
+
+#get data
+url ="https://github.com/araupontones/covid19mx/blob/master/app/diasData.rds?raw=true"
+rds_file = "diasData.rds"
+
 Sys.setlocale("LC_TIME", "Spanish")
 fuente="obtenidos a través del paquete <i>covidMex</i> (Reyes,2020) y el repositario <i>covid19_mex</i> (Guzmán, 2020)"
 fuente="obtenidos a través de www.gob.mx y limpiados por @AndresArau"
@@ -26,13 +55,33 @@ colorM="#652D90"
 
 #options(encoding = 'UTF-8')
 
+##table of cases
+url ="https://github.com/araupontones/covid19mx/blob/master/app/table.rds?raw=true"
+rds_file = "table.rds"
+dfTables = get_rds(url = url, rds_file = "table.rds")
+
+##table of days
+url ="https://github.com/araupontones/covid19mx/blob/master/app/diasData.rds?raw=true"
+rds_file = "diasData.rds"
+diasData = get_rds(url = url, rds_file = "diasData.rds")
+
+##table of muertos 
+url ="https://github.com/araupontones/covid19mx/blob/master/app/muertos.rds?raw=true"
+rds_file = "muertos.rds"
+muertos = get_rds(url = url, rds_file = "muertos.rds")
+
+##table of poblacion
+url ="https://github.com/araupontones/covid19mx/blob/master/app/poblacion.rds?raw=true"
+rds_file = "poblacion.rds"
+poblacion = get_rds(url = url, rds_file = "poblacion.rds")
+                  
+##sapefile
+
+url ="https://github.com/araupontones/covid19mx/blob/master/app/shapefile.rds?raw=true"
+rds_file = "shapefile.rds"
+shapefile = get_rds(url = url, rds_file = "shapefile.rds")
 
 
-dfTables = read_rds("table.rds")
-diasData = read_rds("diasData.rds")
-muertos = read_rds("muertos.rds")
-poblacion = read_rds("poblacion.rds")
-shapefile = read_rds("shapefile.rds")
 
 
 ###############################################################################
