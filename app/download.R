@@ -8,34 +8,69 @@ library(ggplot2)
 library(Hmisc)
 library(lubridate)
 library(rbokeh)
+library(rvest)
+library(xml2)
+library(httr)
 
 
 
+##get pdf of casos confirmados -----------------------------------------------------------------------------------
 
-#https://www.gob.mx/salud/es/archivo/documentos
+##scrap html of of gob.mx 
+url = "https://www.gob.mx/salud/documentos/coronavirus-covid-19-comunicado-tecnico-diario-238449"
+site = read_html(url)
 
+##get all elements with href
+hrefs =  site %>% 
+  html_node("body") %>%
+  xml_find_all("//@href")
+
+##get link where the pdf is located
+link = paste0("https://www.gob.mx",html_text(hrefs[which(str_detect(hrefs,"casos_positivos"))]))
+
+##create directory and file name to download file
+file = "casos_confirmados.pdf"
+tempdir = tempdir()
+pdfFile=file.path(tempdir, file)
+
+
+##save pdf file in temp directory
+RawData <- GET(link) #get file
+
+
+filecon <- file(pdfFile, "wb")  ##open connection to write data in download folder
+writeBin(RawData$content, filecon)  ###write data contents to download file!!
+close(filecon) ##close connection
+
+
+
+##test using tabulizer 
+#locate_areas(file = pdfFile, pages = 2) ##succes!!!
+
+
+##read and clean data --------------------------------------------------------------------------------------
 #Parameters 
 setwd("C:\\Users\\andre\\Dropbox\\Andres\\03.Dashboards\\10.Coronavirus\\covid19mx")
-file = file.path("data","10Abril.pdf") 
+#file = file.path("data","10Abril.pdf") 
 file_muertos = file.path("data", "Muertos.xlsx")
 file_poblacion = file.path("data", "Poblacion.xlsx")
 
 
-pages = get_n_pages(file)
+pages = get_n_pages(pdfFile)
 penultimaPag = pages-1
 namesColumns = c("Caso", "Estado", "Sexo", "Edad", "FechaSintomas", "Status")
 centroids = read_rds("app/centroids.rds")
 
 
 #locate_areas(file)
-#locate_areas(file = file, pages = 2)
+locate_areas(file = pdfFile, pages = 2)
 
 #Funciton to remove Xs from strings
 removeX = function(x){str_remove(x,"X")}
 
 #read data ---------------------------------------------------------------------------------------------------------------
 #pagina 1
-table1 = extract_tables(file, 
+table1 = extract_tables(pdfFile, 
                        method = "lattice", 
                        guess = F,
                        output = "data.frame",
@@ -91,14 +126,14 @@ table1df = table1df %>%
 
 
 #resto de tablas hasta penultima ---------------------------------------------------------------------------
-table2= extract_tables(file, 
+table2= extract_tables(pdfFile, 
                         method = "lattice", 
                         guess = F,
                         output = "data.frame",
                        encoding = "UTF-8",
                         pages = 2:penultimaPag,
                         area =  list(
-                          c(0, 38, 939, 584)
+                          c(0, 38, 953, 584)
                         )
                        )
 
@@ -154,14 +189,14 @@ table2df = do.call(rbind, table2df)
 
 
 #ultima pagina------------------------------------------------------------------------------
-table3 = extract_tables(file, 
+table3 = extract_tables(pdfFile, 
                         method = "lattice", 
                         guess = F,
                         output = "data.frame",
                         encoding = "UTF-8",
                         pages = pages,
                         area =  list(
-                          c(0, 38, 939, 584)
+                          c(0, 38, 953, 584)
                         ))
 
 
@@ -295,91 +330,43 @@ if("MASCULINO" %in% unique(table$Sexo)  == TRUE){
 
 
 
-table = write_rds(table,"app/table.rds")
+table = write_rds(table,"app/table.rds") 
 #shapefile = read_rds("shapefile.rds")
 
 
 #Count of casos by day (update manually daily) ----------------------------------------------------------------------------
-
-
-diasList =list( data.frame("Fecha" ="10/04/2020","Casos"=3844, "Dia"=42),
-  data.frame("Fecha" ="9/04/2020","Casos"=3441, "Dia"=41),
-  data.frame("Fecha" ="8/04/2020","Casos"=3181, "Dia"=40),
-  data.frame("Fecha" ="7/04/2020","Casos"=2785, "Dia"=39),
-  data.frame("Fecha" ="6/04/2020","Casos"=2439, "Dia"=38),  
-  data.frame("Fecha" ="5/04/2020","Casos"=2143, "Dia"=37),  
-  data.frame("Fecha" ="4/04/2020","Casos"=1890, "Dia"=36),  
-  data.frame("Fecha" ="3/04/2020","Casos"=1688, "Dia"=35),
-  data.frame("Fecha" ="2/04/2020","Casos"=1509, "Dia"=34), 
-  data.frame("Fecha" ="1/04/2020","Casos"=1378, "Dia"=33), 
-  data.frame("Fecha" ="31/03/2020","Casos"=1206, "Dia"=32), 
-  data.frame("Fecha" ="30/03/2020","Casos"=1094, "Dia"=31),
-                           data.frame("Fecha" ="29/03/2020","Casos"=993, "Dia"=30),
-                           data.frame("Fecha" ="28/03/2020","Casos"=848, "Dia"=29),
-                            data.frame("Fecha" ="27/03/2020","Casos"=727, "Dia"=28),
-                           data.frame("Fecha" ="26/03/2020","Casos"=585, "Dia"=27),
-                            data.frame("Fecha" ="25/03/2020","Casos"=475, "Dia"=26),
-                            data.frame("Fecha" ="24/03/2020","Casos"=405, "Dia"=25),
-                            data.frame("Fecha" ="23/03/2020","Casos"=367, "Dia"=24),
-                            data.frame("Fecha" ="22/03/2020","Casos"=316, "Dia"=23),
-                            data.frame("Fecha" ="21/03/2020","Casos"=251, "Dia"=22),
-                            data.frame("Fecha" ="20/03/2020","Casos"=203, "Dia"=21),
-                            data.frame("Fecha" ="19/03/2020","Casos"=164, "Dia"=20),
-                            data.frame("Fecha" ="18/03/2020","Casos"=118, "Dia"=19),
-                            data.frame("Fecha" ="17/03/2020","Casos"=93, "Dia"=18),
-                            data.frame("Fecha" ="16/03/2020","Casos"=82, "Dia"=17),
-                            data.frame("Fecha" ="15/03/2020","Casos"=53, "Dia"=16),
-                            data.frame("Fecha" ="14/03/2020","Casos"=41, "Dia"=15),
-                            data.frame("Fecha" ="12/03/2020","Casos"=26, "Dia"=14),
-                            data.frame("Fecha" ="11/03/2020","Casos"=8, "Dia"=13),
-                            data.frame("Fecha" ="10/03/2020","Casos"=7, "Dia"=12),
-                            data.frame("Fecha" ="9/03/2020","Casos"=7, "Dia"=11),
-                            data.frame("Fecha" ="8/03/2020","Casos"=7, "Dia"=10),
-                            data.frame("Fecha" ="7/03/2020","Casos"=7, "Dia"=9),
-                            data.frame("Fecha" ="6/03/2020","Casos"=6, "Dia"=8),
-                            data.frame("Fecha" ="5/03/2020","Casos"=5, "Dia"=7),
-                            data.frame("Fecha" ="4/03/2020","Casos"=5, "Dia"=6),
-                            data.frame("Fecha" ="3/03/2020","Casos"=5, "Dia"=5),
-                            data.frame("Fecha" ="2/03/2020","Casos"=5, "Dia"=4),
-                            data.frame("Fecha" ="1/03/2020","Casos"=5, "Dia"=3),
-                            data.frame("Fecha" ="29/02/2020","Casos"=4, "Dia"=2),
-                            data.frame("Fecha" ="28/02/2020","Casos"=3, "Dia"=1)
-                            
-)
-
-  Sys.setlocale("LC_TIME", "Spanish")
-  
-#append days and create a single table
-diasData = do.call(rbind, diasList) %>%
-  mutate(Fecha = dmy(Fecha),
-         Casoslog=log(Casos))%>%
+Sys.setlocale("LC_TIME", "Spanish")
+diasData = covidMex::covidWWSituation() %>%
+  filter(geo_id =="MX") %>%
+  select(fecha_corte, casos_nuevos, decesos) %>%
+  mutate(Fecha = ymd(fecha_corte)-1) %>%
+  arrange(Fecha) %>%
+  filter(Fecha > "2020-02-28") %>%
+  mutate(Casos = cumsum(casos_nuevos),
+         Casoslog=log(Casos),
+         Dia = row_number()) %>%
+  rename(Muertos = decesos,
+         Nuevos = casos_nuevos) %>%
+  select(-fecha_corte) %>%
   arrange(Dia) %>%
-  mutate(Nuevos=Casos - lag(Casos),
-         Nuevos = ifelse(is.na(Nuevos), Casos, Nuevos),
-         fecha= paste(day(Fecha), month(Fecha, label = T)))
+  mutate(fecha= paste(day(Fecha), month(Fecha, label = T))
+         )
 
-rm(diasList)
 
-#poblacion
+muertos = diasData %>%
+  select(Muertos, Fecha) %>%
+  rename(DefuncionesMasQAyer= Muertos) %>%
+  mutate(Defunciones = cumsum(DefuncionesMasQAyer))
 
-poblacion = readxl::read_xlsx(file_poblacion) %>%
-  mutate(Estado = stringi::stri_trans_general(Estado,"Latin-ASCII"))
+
+
+
+
+
   
-
-poblacion$Estado[poblacion$Estado=="Michoacan de Ocampo"] <- "Michoacan" #clean to make it consistent with table
-poblacion$Estado[poblacion$Estado=="Coahuila de Zaragoza"] <- "Coahuila"
-poblacion$Estado[poblacion$Estado=="Veracruz de Ignacio de la Llave"] <- "Veracruz"
-
-
-
-#Muertos 
-
-muertos = readxl::read_xlsx(file_muertos)%>%
-  mutate(Fecha = ymd(Fecha),
-         DefuncionesMasQAyer = Defunciones - lag(Defunciones))
-
+#save data
 
 write_rds(diasData, "app/diasData.rds")
 write_rds(muertos, "app/muertos.rds")
-write_rds(poblacion, "app/poblacion.rds")
+#write_rds(poblacion, "app/poblacion.rds")
 
