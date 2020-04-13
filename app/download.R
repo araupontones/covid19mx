@@ -325,7 +325,7 @@ if("MASCULINO" %in% unique(table$Sexo)  == TRUE){
 
 
 table = write_rds(table,"app/table.rds") 
-#shapefile = read_rds("shapefile.rds")
+#shapefile = read_rds("shapefile.rds"
 
 
 #Count of casos by day (update manually daily) ----------------------------------------------------------------------------
@@ -333,7 +333,7 @@ Sys.setlocale("LC_TIME", "Spanish")
 diasData = covidMex::covidWWSituation() %>%
   filter(geo_id =="MX") %>%
   select(fecha_corte, casos_nuevos, decesos) %>%
-  mutate(Fecha = ymd(fecha_corte)-1) %>%
+  mutate(Fecha = ymd(fecha_corte)) %>%
   arrange(Fecha) %>%
   filter(Fecha > "2020-02-28") %>%
   mutate(Casos = cumsum(casos_nuevos),
@@ -351,9 +351,6 @@ muertos = diasData %>%
   select(Muertos, Fecha) %>%
   rename(DefuncionesMasQAyer= Muertos) %>%
   mutate(Defunciones = cumsum(DefuncionesMasQAyer))
-
-
-
 
 
 
