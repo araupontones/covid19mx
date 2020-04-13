@@ -57,7 +57,7 @@ centroids = read_rds("app/centroids.rds")
 
 
 #locate_areas(file)
-locate_areas(file = pdfFile, pages = 2)
+#locate_areas(file = pdfFile, pages = 2)
 
 #Funciton to remove Xs from strings
 removeX = function(x){str_remove(x,"X")}
