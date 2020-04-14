@@ -8,6 +8,6 @@ facilite la comprensión de la evolución de COVID19 en México (mi país).
 
 El repositario se divide en los siguientes directorios:
 
-- Download: Scripts para bajar, de manera automatizada, los reportes de casos confirmados que publica la SSA. (Cualquier colaboración es bienvendia!)
+- downloads: Scripts para bajar, de manera automatizada, los reportes de casos confirmados que publica la SSA. (Cualquier colaboración es bienvendia!)
 - app: Aplicación de shinyR para compartir la visualización de los datos
 -Graficas: Graficos sobre la relacion del covid con otras variables. 
