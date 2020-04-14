@@ -187,6 +187,7 @@ tabla_casos_covid = casos_df %>%
 
 
 
+
 ### 6. Remover elementos utilizados durante la limpieza y descarga de la tabla--------------------------------------------------------
 rm(casos_df, entidades, lista_diccionarios, municipios, RawData)
 
