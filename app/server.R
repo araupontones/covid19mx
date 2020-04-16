@@ -31,28 +31,7 @@ server <- function(input, output, session) {
   
   
   
-  ##function to read rds files from github
-  get_rds <- function(url, rds_file) {
-    
-    RawData <- GET(url) #Sucess!!
-    
-    
-    tempdir = tempdir()
-    rdsfile=file.path(tempdir, rds_file)
-    
-    #open connection to write data in download folder
-    filecon <- file(rdsfile, "wb") 
-    #write data contents to download file!!
-    writeBin(RawData$content, filecon) 
-    #close the connection
-    close(filecon)
-    
-    t = readRDS(rdsfile)
-    
-    return(t)
-    
-    
-  }
+  
   
   
   ## Download data from  -------------------------------------------------------------------------------------------------
@@ -77,14 +56,7 @@ server <- function(input, output, session) {
   unzip_dir = file.path(tempdir, "Casos_confirmados")
   
   
-  ##Parametros para descarga de diccionario
-  href_dicc = "http://187.191.75.115/gobmx/salud/datos_abiertos/diccionario_datos_covid19.zip"
-  excel = "Catalogos"
-  zip_dicc = "Diccionario_COVID.zip"
-  zip_dicc_dir = file.path(tempdir, zip_dicc)
-  unzip_dicc_dir = file.path(tempdir, "Diccionario")
-  
-  
+
   
   ###2.Descargar el arhivo .zip de casos ------------------------------------------------------------------------------
   
@@ -108,12 +80,12 @@ server <- function(input, output, session) {
   )
   
   
-  
+  setwd("C:/Users/andre/Dropbox/Andres/03.Dashboards/10.Coronavirus/covid19mx/app")
   
   
   ###3.Descargar el arhivo .zip de diccionario ---------------------------------------------------------------------------------------
-  
-  lista_diccionarios = readRDS("lista_diccionarios.rds")
+ 
+  lista_diccionarios = read_rds("lista_diccionarios.rds")
   
   
   ###4. Crear look up tables para re-labear los factores de Municipio y Estado de residencia ---------------------------------------
@@ -275,31 +247,24 @@ server <- function(input, output, session) {
   ## Read data from github ---------------------------------------------------------------------------------------------
   #options(encoding = 'UTF-8')
   
-  ##table of cases
-  # url ="https://github.com/araupontones/covid19mx/blob/master/app/table.rds?raw=true"
-  # rds_file = "table.rds"
-  # dfTables = get_rds(url = url, rds_file = "table.rds")
+
   
-  ##table of days
-  # url ="https://github.com/araupontones/covid19mx/blob/master/app/diasData.rds?raw=true"
-  # rds_file = "diasData.rds"
-  # diasData = get_rds(url = url, rds_file = "diasData.rds")
-  
-  
+  ###desde aqui
   ##table of poblacion
-  url ="https://github.com/araupontones/covid19mx/blob/master/app/poblacion.rds?raw=true"
-  rds_file = "poblacion.rds"
-  poblacion = get_rds(url = url, rds_file = "poblacion.rds")
+  # url ="https://github.com/araupontones/covid19mx/blob/master/app/poblacion.rds?raw=true"
+  # rds_file = "poblacion.rds"
+  # poblacion = get_rds(url = url, rds_file = "poblacion.rds")
+  poblacion = read_rds("poblacion.rds")
   
-  ##sapefile
   
-  url ="https://github.com/araupontones/covid19mx/blob/master/app/shapefile.rds?raw=true"
-  rds_file = "shapefile.rds"
-  shapefile = get_rds(url = url, rds_file = "shapefile.rds")
   
-  municipios_shp = readRDS("municipios.rds")
-  municipios_centroids = readRDS("centroids_mun.rds")
+  #municipios_shp = readRDS("municipios.rds")
+  # url ="https://github.com/araupontones/covid19mx/blob/master/app/centroids_mun.rds?raw=true"
+  # rds_file = "centroids_mun.rds"
+  # municipios_centroids = get_rds(url = url, rds_file = "centroids_mun.rds")
+ 
   
+  municipios_centroids = read_rds("centroids_mun.rds")
   
   
   
@@ -398,16 +363,27 @@ server <- function(input, output, session) {
     summarise(Casos=n()) %>%
     rename(Municipio = MUNICIPIO_RES)
   
+##prepare centroides para mapear
+  library(sf)
+  municipios_centroids$long  = st_coordinates(municipios_centroids)[,1]
+  municipios_centroids$lat  = st_coordinates(municipios_centroids)[,2]
   
-  casos_shape = sf::st_sf(merge(x=casos_municipio,y=municipios_centroids, by="MUNICIPIO_RES_ID", type="left"))
+  municipios_centroids = data.frame(municipios_centroids) %>%
+    select(-geometry)
+  
+  
+  
+  #casos_shape = sf::st_sf(merge(x=casos_municipio,y=municipios_centroids, by="MUNICIPIO_RES_ID", type="left"))
+  casos_shape = merge(x=casos_municipio,y=municipios_centroids, by="MUNICIPIO_RES_ID", type="left")
+  
   
 
-  casos_shape$long  = st_coordinates(casos_shape)[,1]
-  casos_shape$lat  = st_coordinates(casos_shape)[,2]
+  # casos_shape$long  = st_coordinates(casos_shape)[,1]
+  # casos_shape$lat  = st_coordinates(casos_shape)[,2]
   casos_shape$Municipio = as.character(casos_shape$Municipio)
-  casos_shape = data.frame(casos_shape)
-  casos_shape = casos_shape %>%
-    select(-geometry)
+  #casos_shape = data.frame(casos_shape)
+  # casos_shape = casos_shape %>%
+  #   select(-geometry)
   
 ##style graphs
   tema_linea <- theme_minimal() +
