@@ -32,7 +32,10 @@ unzip_dicc_dir = file.path(tempdir, "Diccionario")
 
 ###2.Descargar el arhivo .zip de casos ------------------------------------------------------------------------------
 
-RawData <- GET(href) #gobtener directorio zip
+RawData = GET(href,
+             add_headers(Connection = 'keep-alive',
+                         `Upgrade-Insecure-Requests`="1",
+                         `User-Agent`= 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36'))
 filecon <- file(zip_dir, "wb")  ##oabrir conexion con directorio temporal
 writeBin(RawData$content, filecon)  ###descargar directorio zip en directorio temporal!!
 close(filecon) ##cerrar conexion
@@ -159,6 +162,7 @@ tabla_casos_covid = casos_df %>%
          ENTIDAD_RES = factor(ENTIDAD_RES,
                               levels = levels_entidad,
                               labels = label_entidad),
+         MUNICIPIO_RES_ID = MUNICIPIO_RES,
          MUNICIPIO_RES = factor(MUNICIPIO_RES,
                                 levels = levels_municipos,
                                 labels = label_municipios),
@@ -170,7 +174,7 @@ tabla_casos_covid = casos_df %>%
                             labels = c("Positivo SARS-CoV-2","No positivo SARS-CoV-2","Resultado pendiente")),
          NACIONALIDAD = factor(NACIONALIDAD,
                                levels = c("1", "2", "99"),
-                               labels = c("MEXICANA", "EXXTRANJERA", "NO ESPECIFICADO")),
+                               labels = c("MEXICANA", "EXTRANJERA", "NO ESPECIFICADO")),
          TIPO_PACIENTE = factor(TIPO_PACIENTE,
                                 levels = level_paciente,
                                 labels = label_paciente),
@@ -185,7 +189,7 @@ tabla_casos_covid = casos_df %>%
   mutate_at(sino_vars, sino)
 
 
-
+  
 
 
 ### 6. Remover elementos utilizados durante la limpieza y descarga de la tabla--------------------------------------------------------

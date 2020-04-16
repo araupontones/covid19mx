@@ -1,20 +1,17 @@
 library(shiny)
 library(shinycssloaders)
-library(CoordinateCleaner)
 library(leaflet)
-library(tabulizer)
 library(tidyverse)
 library(stringr)
 library(htmltools)
 library(ggplot2)
 library(Hmisc)
 library(lubridate)
-library(rbokeh)
 library(leaflet.extras)
 
 
 #file = "https://www.gob.mx/cms/uploads/attachment/file/542354/Tabla_casos_positivos_COVID-19_resultado_InDRE_2020.03.19.pdf"  
-link = "https://www.docdroid.net/YLMXs1N/22marzo.pdf"
+
 
 Sys.setlocale("LC_TIME", "Spanish")
 
