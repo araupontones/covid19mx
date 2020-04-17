@@ -90,13 +90,18 @@ tabs = diccionario %>%
 lista_diccionarios = lapply(tabs, function(x){
   
     tabla = read_excel(diccionario, sheet = x)
+    names(tabla) <- stringi::stri_trans_general(names(tabla),"Latin-ASCII") ##quitar acentos de nombres de columnas
     
     return(tabla)
   
 })
 
+
+
 ##corregir nombres de los catalogos para nombrar elementos de la lista
 names_tabs = str_remove_all(tabs,"Catálogo |de " )
+
+
 
 ##nombrar elementos de la lista
 names(lista_diccionarios) <- names_tabs
@@ -128,19 +133,19 @@ label_municipios = municipios$MUNICIPIO
 levels_municipos = paste0(municipios$CLAVE_ENTIDAD,municipios$CLAVE_MUNICIPIO)
 
 ##levels and labels tipo paciente
-label_paciente = lista_diccionarios$TIPO_PACIENTE$DESCRIPCIÓN
+label_paciente = lista_diccionarios$TIPO_PACIENTE$DESCRIPCION
 level_paciente = lista_diccionarios$TIPO_PACIENTE$CLAVE
 
 ##levels and labels tipo sector
-label_sector = lista_diccionarios$SECTOR$DESCRIPCIÓN
+label_sector = lista_diccionarios$SECTOR$DESCRIPCION
 level_sector = lista_diccionarios$SECTOR$CLAVE
 
 ##levels and labels origen
-label_origen = lista_diccionarios$ORIGEN$DESCRIPCIÓN
+label_origen = lista_diccionarios$ORIGEN$DESCRIPCION
 level_origen = lista_diccionarios$ORIGEN$CLAVE
 
 ##levels and labels SINO
-label_sino = lista_diccionarios$SI_NO$DESCRIPCIÓN
+label_sino = lista_diccionarios$SI_NO$DESCRIPCION
 level_sino = lista_diccionarios$SI_NO$CLAVE
 
 ##funcion para variables sino
