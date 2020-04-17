@@ -99,7 +99,8 @@ lista_diccionarios = lapply(tabs, function(x){
 
 
 ##corregir nombres de los catalogos para nombrar elementos de la lista
-names_tabs = str_remove_all(tabs,"Catálogo |de " )
+names_tabs = stringi::stri_trans_general(tabs,"Latin-ASCII")
+names_tabs = str_remove_all(names_tabs,"Catalogo |de " )
 
 
 
@@ -108,8 +109,8 @@ names(lista_diccionarios) <- names_tabs
 
 
 ###4. Crear look up tables para re-labear los factores de Municipio y Estado de residencia ---------------------------------------
-
-##look up de entidades y municipios
+# 
+# ##look up de entidades y municipios
 entidades= lista_diccionarios$ENTIDADES
 municipios = lista_diccionarios$MUNICIPIOS %>%
   mutate(MUN_CLAVE = paste0(CLAVE_ENTIDAD, CLAVE_MUNICIPIO)) ##crear identificacion pod Municipio
@@ -118,12 +119,12 @@ municipios = lista_diccionarios$MUNICIPIOS %>%
 
 ##CREAR ID DE MUNICIPIOS
 casos_df = casos_df %>%
-  mutate(MUNICIPIO_RES = paste0(ENTIDAD_RES,MUNICIPIO_RES)) 
+  mutate(MUNICIPIO_RES = paste0(ENTIDAD_RES,MUNICIPIO_RES))
 #%>%
  # filter(MUNICIPIO_RES!="19066") #Eliminar inconsistencia de NL (envie tweet para confirmar)
 
 
-##levels y labels de entidad 
+##levels y labels de entidad
 levels_entidad = entidades$CLAVE_ENTIDAD
 label_entidad = entidades$ENTIDAD_FEDERATIVA
 
@@ -155,8 +156,8 @@ sino = function(x){factor(x,
 
 
 ##variables sino
-sino_vars = c("INTUBADO", "NEUMONIA", "EMBARAZO", 
-              "HABLA_LENGUA_INDI", "DIABETES", 
+sino_vars = c("INTUBADO", "NEUMONIA", "EMBARAZO",
+              "HABLA_LENGUA_INDI", "DIABETES",
               "EPOC", "ASMA", "INMUSUPR","HIPERTENSION",
               "OTRA_CON","CARDIOVASCULAR", "OBESIDAD",
               "RENAL_CRONICA","TABAQUISMO", "OTRO_CASO",
@@ -203,11 +204,11 @@ tabla_casos_covid = casos_df %>%
   mutate_at(sino_vars, sino)
 
 
-  
+
 
 
 ### 6. Remover elementos utilizados durante la limpieza y descarga de la tabla--------------------------------------------------------
 rm(casos_df, entidades, lista_diccionarios, municipios, RawData)
-
-
-                      
+# 
+# 
+#                       
