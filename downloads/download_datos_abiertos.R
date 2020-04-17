@@ -54,6 +54,15 @@ casos_df = read_csv(file.path(unzip_dir,
 
 
 
+## Algunas veces cambian el nombre de las variables: crear sistema para identificar y corregir cambio
+names(casos_df)[which(str_detect(names(casos_df), "HABLA"))] <- "HABLA_LENGUA_INDI"
+names(casos_df)[which(str_detect(names(casos_df), "OTRA_C"))] <- "OTRA_CON"
+
+
+
+
+
+
 ###3.Descargar el arhivo .zip de diccionario ---------------------------------------------------------------------------------------
 
 RawData <- GET(href_dicc) #gobtener directorio zip

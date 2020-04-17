@@ -8,7 +8,7 @@ library(lubridate)
 library(readxl)
 library(rgdal)
 library(sf)
-
+library(httr)
 
 
 server <- function(input, output, session) {
@@ -80,7 +80,7 @@ server <- function(input, output, session) {
   )
   
   
-  setwd("C:/Users/andre/Dropbox/Andres/03.Dashboards/10.Coronavirus/covid19mx/app")
+  
   
   
   ###3.Descargar el arhivo .zip de diccionario ---------------------------------------------------------------------------------------
@@ -234,8 +234,9 @@ server <- function(input, output, session) {
     rename(Muertos = decesos,
            Nuevos = casos_nuevos) %>%
     arrange(Dia) %>%
-    mutate(fecha= paste(day(Fecha), month(Fecha, label = T))
-    )
+    mutate(fecha= paste(day(Fecha), month(Fecha, label = T)),
+           Nuevos = Casos - lag(Casos))
+    
   
   
   muertos = diasData %>%
