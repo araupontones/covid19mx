@@ -72,18 +72,28 @@ close(filecon) ##cerrar conexion
 
 
 
+
 ##unzip el directorio en directorio temporal
 unzip(zip_dicc_dir, overwrite = T,
       exdir = unzip_dicc_dir)
 
-##capturar nombre del directorio que contiene el diccionario
-diccionario = file.path(unzip_dicc_dir,
-                        list.files(unzip_dicc_dir)[which(str_detect
-                                               (list.files(unzip_dicc_dir), excel)
-)])
 
 
-##tabs del archivo
+
+
+#If diccionario comes in a folder 
+
+  
+  ##capturar nombre del directorio que contiene el diccionario
+  diccionario = file.path(unzip_dicc_dir,
+                          list.files(unzip_dicc_dir, recursive = T)[which(str_detect
+                                                           (list.files(unzip_dicc_dir, recursive = T), excel)
+                          )])
+
+
+
+
+  ##tabs del archivo
 tabs = diccionario %>%
   readxl::excel_sheets() 
 
