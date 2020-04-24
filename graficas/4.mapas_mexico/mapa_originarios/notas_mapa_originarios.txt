@@ -1,0 +1,21 @@
+
+##datos del CDI y de covid
+
+Segun estos datos 7,173,534 personas hablan alguna lengua indigena (el 6%)
+
+dividi al pais en dos tipos:
+
+Municipios con 50% o menos de personas que hablan alguna lengua indigena (2056 114,642,139)
+Municipios con 50 % o mas que hablan alguna lengua indigena (401 4,888,616)
+
+
+#de covid 
+
+98 casos de los 8772 habla una lengua indigena (1.1%)
+
+495 han sido testados de los 50,915 (el 0.9%)
+
+# de ambas bases 
+
+el ptimer grupo tiene 8,733 casos reportados y el segundo 34
+el primer tien 50,678 tests y el segundo 226
